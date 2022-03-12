@@ -1,0 +1,54 @@
+create table customer (
+ email varchar(50) not null,
+ name varchar(40) not null,
+ address varchar(50) not null,
+ phone varchar(15) not null,
+ primary key (email)
+ );
+create table ware_house (
+ code varchar(10) not null,
+ address varchar(50) not null,
+ phone varchar(40) not null,
+ primary key (code)
+ );
+create table authors (
+ name varchar(40) not null,
+ address varchar(50) not null,
+ URL varchar(50) not null,
+ primary key (name)
+ );
+create table publisher (
+ name varchar(40) not null,
+ address varchar(50) not null,
+ phone varchar(15) not null,
+ url varchar (50) not null,
+ primary key (name)
+ );
+create table shopping_basket  (
+ basket_id integer not null,
+ customer_email varchar(50) not null,
+ primary key (basket_id),
+ constraint fk_shopping_basket  foreign key (customer_email) references customer (email)
+ );
+create table book  (
+ isbn varchar(15) not null,
+ year DATE NOT NULL,
+ title varchar (40) not null,
+ price numeric not null,
+ warehouse_code varchar(10) not null,
+ publisher_name varchar (40) not null,
+ basket_id integer not null,
+ primary key (isbn),
+ constraint book_warehouse_code foreign key (warehouse_code) references 
+ ware_house (code),
+ constraint book_publisher_name foreign key (publisher_name) references 
+ publisher (name),
+ constraint book_basket_id foreign key (basket_id) references shopping_basket 
+ (basket_id));
+create table book_authors  (
+ book_isbn varchar(15) not null,
+ authors_name varchar(40) not null,
+ constraint fk_book_authors_authors_name foreign key (authors_name) references authors (name),
+ constraint fk_book_authors_book_isbn foreign key (book_isbn) references book (isbn),
+ unique (book_isbn,authors_name )
+ );
